@@ -880,7 +880,13 @@
     </a>
 
     <!-- CV Download -->
-    <div class="connect-card reveal" id="cv-card" style="cursor:pointer;" onclick="downloadCV()">
+    <a href="Achismita_Dey_updated_CV.pdf" target="_blank" class="connect-card reveal">
+  <div class="connect-icon">📄</div>
+  <div class="connect-label">Document</div>
+  <div class="connect-name">Curriculum Vitae</div>
+  <div class="connect-desc">Full academic and professional CV</div>
+  <div class="connect-arrow">→</div>
+</a>
       <div class="connect-icon">📄</div>
       <div class="connect-label">Document</div>
       <div class="connect-name">Curriculum Vitae</div>
@@ -889,7 +895,13 @@
     </div>
 
     <!-- Resume Download -->
-    <div class="connect-card reveal" id="resume-card" style="cursor:pointer;" onclick="downloadResume()">
+    <a href="Achismita_Dey_Resume.pdf" download class="connect-card reveal">
+  <div class="connect-icon">📋</div>
+  <div class="connect-label">Document</div>
+  <div class="connect-name">Resume</div>
+  <div class="connect-desc">Concise one-page industry resume</div>
+  <div class="connect-arrow">↓</div>
+</a>
       <div class="connect-icon">📋</div>
       <div class="connect-label">Document</div>
       <div class="connect-name">Resume</div>
@@ -906,25 +918,6 @@
     </a>
 
   </div>
-
-  <!-- Upload Section -->
-  <div style="margin-top:3rem;" class="reveal">
-    <div style="background:var(--card);border:1px dashed rgba(0,255,200,0.25);border-radius:12px;padding:2.5rem;text-align:center;">
-      <div style="font-size:2rem;margin-bottom:1rem;">📁</div>
-      <div style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Upload Your Documents</div>
-      <div style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">Replace the CV or Resume with an updated version</div>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <label class="btn btn-outline" style="cursor:pointer;">
-          Upload CV <input type="file" accept=".pdf" style="display:none" onchange="handleUpload(event,'cv')"/>
-        </label>
-        <label class="btn btn-pink" style="cursor:pointer;">
-          Upload Resume <input type="file" accept=".pdf" style="display:none" onchange="handleUpload(event,'resume')"/>
-        </label>
-      </div>
-      <div id="upload-status" style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent);min-height:1.2rem;"></div>
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
