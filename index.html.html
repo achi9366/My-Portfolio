@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Achismita Dey — Cyber Security Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --accent: #00ffc8;
+    --accent2: #ff4d6d;
+    --accent3: #7b61ff;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --border: rgba(0,255,200,0.12);
+    --glow: 0 0 30px rgba(0,255,200,0.15);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:9999;
+    opacity:0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,255,200,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-name span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-tagline {
+    font-size: 1.2rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 0 40px rgba(0,255,200,0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-outline:hover {
+    background: rgba(0,255,200,0.07);
+    transform: translateY(-2px);
+    box-shadow: var(--glow);
+  }
+
+  .btn-pink {
+    background: transparent;
+    color: var(--accent2);
+    border: 1px solid var(--accent2);
+  }
+
+  .btn-pink:hover {
+    background: rgba(255,77,109,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+
+  /* ABOUT */
+  #about .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--glow);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--surface); border-radius: 24px; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(123,97,255,0.15);
+  }
+
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .skill-category {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    background: rgba(0,255,200,0.07);
+    color: var(--accent);
+    border: 1px solid rgba(0,255,200,0.15);
+    letter-spacing: 0.05em;
+  }
+
+  /* EXPERIENCE */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), var(--accent3), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 3rem 2rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -0.35rem;
+    top: 0.4rem;
+    width: 0.7rem; height: 0.7rem;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .timeline-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  .timeline-role {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-company {
+    font-size: 0.9rem;
+    color: var(--accent3);
+    margin-bottom: 0.75rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .timeline-bullets {
+    list-style: none;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .timeline-bullets li::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,255,200,0.04) 0%, rgba(123,97,255,0.04) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,255,200,0.1);
+  }
+
+  .project-card:hover::after { opacity: 1; }
+
+  .project-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent3);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .project-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  /* CONFERENCE */
+  .conf-card {
+    background: linear-gradient(135deg, rgba(123,97,255,0.08) 0%, rgba(0,255,200,0.05) 100%);
+    border: 1px solid rgba(123,97,255,0.3);
+    border-radius: 12px;
+    padding: 2.5rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .conf-badge {
+    background: var(--accent3);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .conf-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .conf-details {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  /* CONNECT / DOCUMENTS */
+  #connect {
+    background: var(--surface);
+    border-radius: 24px;
+  }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .connect-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connect-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .connect-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: var(--glow);
+  }
+
+  .connect-card:hover::before { transform: scaleX(1); }
+
+  .connect-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+  .connect-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .connect-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .connect-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .connect-arrow {
+    margin-top: auto;
+    font-size: 1.2rem;
+    color: var(--accent);
+    transition: transform 0.3s;
+  }
+
+  .connect-card:hover .connect-arrow { transform: translateX(4px); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #hero { padding: 7rem 1.5rem 3rem; }
+    #about .about-grid { grid-template-columns: 1fr; }
+    .conf-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">achismita.dey</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">▸ Cyber Security & Forensic Science</div>
+    <h1 class="hero-name">Achismita<br/><span>Dey</span></h1>
+    <p class="hero-tagline">Final-year B.Tech CSE student specializing in SOC operations, SIEM monitoring, and web application security. Research published at ICEI-2026.</p>
+    <div class="hero-actions">
+      <a href="#connect" class="btn btn-primary">↓ View Documents</a>
+      <a href="https://www.linkedin.com/in/achismita-dey-6aa4162b6" target="_blank" class="btn btn-outline">LinkedIn Profile</a>
+      <a href="#projects" class="btn btn-pink">See Projects</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// about_me</div>
+  <h2 class="section-title">Securing Systems,<br/>One Byte at a Time</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm Achismita Dey from Tripura, pursuing B.Tech in Computer Science & Engineering with a specialization in Cyber Security and Forensic Science at Adamas University.</p>
+      <p>As a final-year student with hands-on internship experience at NIT Agartala and industry roles, I bring practical knowledge of SOC operations, SIEM monitoring, and web application security testing to every challenge.</p>
+      <p>My research on DNA-based image steganography was presented at the 3rd International Conference on Emerging Trends and Innovations in ICT (ICEI-2026) in Pune.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <span class="stat-number">8.5</span>
+        <span class="stat-label">CGPA (7th Sem)</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">4+</span>
+        <span class="stat-label">Internships</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Research Papers</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">2026</span>
+        <span class="stat-label">Graduating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// skill_set.json</div>
+  <h2 class="section-title">Technical Arsenal</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <span class="skill-icon">🛡️</span>
+      <div class="skill-category">SOC & SIEM</div>
+      <div class="skill-tags">
+        <span class="tag">Log Monitoring</span>
+        <span class="tag">Alert Triage</span>
+        <span class="tag">Incident Analysis</span>
+        <span class="tag">Wazuh SIEM</span>
+        <span class="tag">Threat Detection</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🌐</span>
+      <div class="skill-category">Web App Security</div>
+      <div class="skill-tags">
+        <span class="tag">OWASP Top 10</span>
+        <span class="tag">SQL Injection</span>
+        <span class="tag">XSS</span>
+        <span class="tag">CSRF</span>
+        <span class="tag">Burp Suite</span>
+        <span class="tag">Command Injection</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🔐</span>
+      <div class="skill-category">Cyber Security</div>
+      <div class="skill-tags">
+        <span class="tag">Cryptography</span>
+        <span class="tag">Steganography</span>
+        <span class="tag">Network Security</span>
+        <span class="tag">Information Security</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">⚙️</span>
+      <div class="skill-category">Security Tools</div>
+      <div class="skill-tags">
+        <span class="tag">Wireshark</span>
+        <span class="tag">Kali Linux</span>
+        <span class="tag">VMware</span>
+        <span class="tag">Cisco Packet Tracer</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">💻</span>
+      <div class="skill-category">Programming</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">C</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🎨</span>
+      <div class="skill-category">Frontend / UI-UX</div>
+      <div class="skill-tags">
+        <span class="tag">React</span>
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">Figma</span>
+        <span class="tag">UI/UX Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// experience.log</div>
+  <h2 class="section-title">Work & Research</h2>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">2025</div>
+      <div class="timeline-role">Cyber Security Intern</div>
+      <div class="timeline-company">Zettawise Pvt. Ltd. — Kolkata</div>
+      <ul class="timeline-bullets">
+        <li>Monitored security logs and analyzed alerts in a live SOC environment</li>
+        <li>Investigated threats using Wazuh SIEM rules and dashboards</li>
+        <li>Tested web applications for OWASP Top 10 vulnerabilities</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">May – Jul 2025</div>
+      <div class="timeline-role">Research Intern — Cyber Security & Forensics</div>
+      <div class="timeline-company">National Institute of Technology (NIT) — Agartala</div>
+      <ul class="timeline-bullets">
+        <li>Researched "Image Steganography using DNA" — resulted in ICEI-2026 paper</li>
+        <li>Conducted literature review, experimentation, and result analysis</li>
+        <li>Used Wireshark and Kali Linux for analysis and security testing</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Dec 2024 – Jan 2025</div>
+      <div class="timeline-role">Research Intern — Cyber Security & Forensics</div>
+      <div class="timeline-company">National Institute of Technology (NIT) — Agartala</div>
+      <ul class="timeline-bullets">
+        <li>Worked on "Token Generation for Authentication in HealthCare Sector"</li>
+        <li>Contributed to research methodology, experimental setup, and paper writing</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Jan – Mar 2024</div>
+      <div class="timeline-role">Frontend Developer Intern</div>
+      <div class="timeline-company">WebDesert Technologies Pvt. Ltd. — Kolkata</div>
+      <ul class="timeline-bullets">
+        <li>Developed responsive UI components and collaborated on application design</li>
+        <li>Collaborated with team to design and develop a full application</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Jan – Mar 2024</div>
+      <div class="timeline-role">UI/UX Design Intern</div>
+      <div class="timeline-company">Blanc — Kolkata</div>
+      <ul class="timeline-bullets">
+        <li>Designed and prototyped user interfaces using Figma</li>
+        <li>Applied design thinking principles and conducted usability testing</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// projects[]</div>
+  <h2 class="section-title">Selected Work</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <span class="project-number">PROJECT_01</span>
+      <div class="project-title">Rainfall Prediction Web App</div>
+      <p class="project-desc">ML-powered rainfall forecasting system with a React frontend built from Figma designs. Focused on responsive UI, dynamic components, and optimized performance.</p>
+      <div class="skill-tags">
+        <span class="tag">React</span>
+        <span class="tag">Figma</span>
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">JavaScript</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-number">PROJECT_02</span>
+      <div class="project-title">Historical Document Image Processing</div>
+      <p class="project-desc">Image restoration system for degraded historical documents using advanced filtering and thresholding techniques to improve text readability and reduce noise.</p>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Image Processing</span>
+        <span class="tag">Filtering</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-number">RESEARCH_01</span>
+      <div class="project-title">DNA-Based Image Steganography</div>
+      <p class="project-desc">Research project on chaotic map-based image steganography using DNA embedding — presented at ICEI-2026, Pune Institute of Computer Technology.</p>
+      <div class="skill-tags">
+        <span class="tag">Steganography</span>
+        <span class="tag">Cryptography</span>
+        <span class="tag">Python</span>
+        <span class="tag">Research</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Conference -->
+  <div style="margin-top: 2.5rem;" class="reveal">
+    <div class="conf-card">
+      <div class="conf-badge">ICEI-2026</div>
+      <div>
+        <div class="conf-title">"Chaotic Map Based Image Steganography Using DNA Embedding"</div>
+        <div class="conf-details">
+          3rd International Conference on Emerging Trends and Innovations in ICT<br/>
+          Pune Institute of Computer Technology, Pune · January 9–11, 2026<br/>
+          Published as author
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="section-label">// connect_with_me</div>
+  <h2 class="section-title">Documents & Links</h2>
+  <div class="connect-grid">
+
+    <a href="https://www.linkedin.com/in/achismita-dey-6aa4162b6" target="_blank" class="connect-card reveal">
+      <div class="connect-icon">💼</div>
+      <div class="connect-label">Social</div>
+      <div class="connect-name">LinkedIn Profile</div>
+      <div class="connect-desc">Connect professionally and view my network</div>
+      <div class="connect-arrow">→</div>
+    </a>
+
+    <!-- CV Download -->
+    <div class="connect-card reveal" id="cv-card" style="cursor:pointer;" onclick="downloadCV()">
+      <div class="connect-icon">📄</div>
+      <div class="connect-label">Document</div>
+      <div class="connect-name">Curriculum Vitae</div>
+      <div class="connect-desc">Full academic and professional CV</div>
+      <div class="connect-arrow">↓</div>
+    </div>
+
+    <!-- Resume Download -->
+    <div class="connect-card reveal" id="resume-card" style="cursor:pointer;" onclick="downloadResume()">
+      <div class="connect-icon">📋</div>
+      <div class="connect-label">Document</div>
+      <div class="connect-name">Resume</div>
+      <div class="connect-desc">Concise one-page industry resume</div>
+      <div class="connect-arrow">↓</div>
+    </div>
+
+    <a href="mailto:achismitadey@gmail.com" class="connect-card reveal">
+      <div class="connect-icon">✉️</div>
+      <div class="connect-label">Email</div>
+      <div class="connect-name">Get in Touch</div>
+      <div class="connect-desc">achismitadey@gmail.com</div>
+      <div class="connect-arrow">→</div>
+    </a>
+
+  </div>
+
+  <!-- Upload Section -->
+  <div style="margin-top:3rem;" class="reveal">
+    <div style="background:var(--card);border:1px dashed rgba(0,255,200,0.25);border-radius:12px;padding:2.5rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:1rem;">📁</div>
+      <div style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Upload Your Documents</div>
+      <div style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">Replace the CV or Resume with an updated version</div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <label class="btn btn-outline" style="cursor:pointer;">
+          Upload CV <input type="file" accept=".pdf" style="display:none" onchange="handleUpload(event,'cv')"/>
+        </label>
+        <label class="btn btn-pink" style="cursor:pointer;">
+          Upload Resume <input type="file" accept=".pdf" style="display:none" onchange="handleUpload(event,'resume')"/>
+        </label>
+      </div>
+      <div id="upload-status" style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent);min-height:1.2rem;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Achismita Dey · Cyber Security & Forensic Science · Adamas University</p>
+  <p style="margin-top:0.5rem;color:#444">Built with purpose — Melaghar, Tripura</p>
+</footer>
+
+<script>
+  // File storage for uploads
+  const files = { cv: null, resume: null };
+
+  function handleUpload(event, type) {
+    const file = event.target.files[0];
+    if (!file) return;
+    files[type] = file;
+    const status = document.getElementById('upload-status');
+    status.textContent = `✓ ${type.toUpperCase()} "${file.name}" loaded — ready to download`;
+    setTimeout(() => { status.textContent = ''; }, 4000);
+  }
+
+  function downloadCV() {
+    if (files.cv) {
+      const url = URL.createObjectURL(files.cv);
+      const a = document.createElement('a');
+      a.href = url; a.download = files.cv.name;
+      a.click(); URL.revokeObjectURL(url);
+    } else {
+      const status = document.getElementById('upload-status');
+      status.textContent = '⚠ No CV uploaded yet — use the upload section below';
+      setTimeout(() => { status.textContent = ''; }, 3000);
+      document.getElementById('connect').scrollIntoView({behavior:'smooth'});
+    }
+  }
+
+  function downloadResume() {
+    if (files.resume) {
+      const url = URL.createObjectURL(files.resume);
+      const a = document.createElement('a');
+      a.href = url; a.download = files.resume.name;
+      a.click(); URL.revokeObjectURL(url);
+    } else {
+      const status = document.getElementById('upload-status');
+      status.textContent = '⚠ No Resume uploaded yet — use the upload section below';
+      setTimeout(() => { status.textContent = ''; }, 3000);
+    }
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
