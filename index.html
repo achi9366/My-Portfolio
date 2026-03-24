@@ -927,43 +927,7 @@
 
 <script>
   // File storage for uploads
-  const files = { cv: null, resume: null };
 
-  function handleUpload(event, type) {
-    const file = event.target.files[0];
-    if (!file) return;
-    files[type] = file;
-    const status = document.getElementById('upload-status');
-    status.textContent = `✓ ${type.toUpperCase()} "${file.name}" loaded — ready to download`;
-    setTimeout(() => { status.textContent = ''; }, 4000);
-  }
-
-  function downloadCV() {
-    if (files.cv) {
-      const url = URL.createObjectURL(files.cv);
-      const a = document.createElement('a');
-      a.href = url; a.download = files.cv.name;
-      a.click(); URL.revokeObjectURL(url);
-    } else {
-      const status = document.getElementById('upload-status');
-      status.textContent = '⚠ No CV uploaded yet — use the upload section below';
-      setTimeout(() => { status.textContent = ''; }, 3000);
-      document.getElementById('connect').scrollIntoView({behavior:'smooth'});
-    }
-  }
-
-  function downloadResume() {
-    if (files.resume) {
-      const url = URL.createObjectURL(files.resume);
-      const a = document.createElement('a');
-      a.href = url; a.download = files.resume.name;
-      a.click(); URL.revokeObjectURL(url);
-    } else {
-      const status = document.getElementById('upload-status');
-      status.textContent = '⚠ No Resume uploaded yet — use the upload section below';
-      setTimeout(() => { status.textContent = ''; }, 3000);
-    }
-  }
 
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
